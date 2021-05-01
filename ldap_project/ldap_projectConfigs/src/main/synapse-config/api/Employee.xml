@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/employee" name="Employee" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST" uri-template="/addemp">
+        <inSequence>
+            <property expression="json-eval($.secureConnection)" name="secureConnection" scope="default" type="STRING"/>
+            <property expression="json-eval($.disableSSLCertificateChecking)" name="disableSSLCertificateChecking" scope="default" type="STRING"/>
+            <property expression="json-eval($.providerUrl)" name="providerUrl" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityPrincipal)" name="securityPrincipal" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityCredentials)" name="securityCredentials" scope="default" type="STRING"/>
+            <ldap.init>
+                <secureConnection>{$ctx:secureConnection}</secureConnection>
+                <disableSSLCertificateChecking>{$ctx:disableSSLCertificateChecking}</disableSSLCertificateChecking>
+                <providerUrl>{$ctx:providerUrl}</providerUrl>
+                <securityPrincipal>{$ctx:securityPrincipal}</securityPrincipal>
+                <securityCredentials>{$ctx:securityCredentials}</securityCredentials>
+            </ldap.init>
+            <property expression="json-eval($.content.objectClass)" name="objectClass" scope="default" type="STRING"/>
+            <property expression="json-eval($.content.attributes)" name="attributes" scope="default" type="STRING"/>
+            <property expression="json-eval($.content.dn)" name="dn" scope="default" type="STRING"/>
+            <ldap.addEntry>
+                <objectClass>{$ctx:objectClass}</objectClass>
+                <attributes>{$ctx:attributes}</attributes>
+                <dn>{$ctx:dn}</dn>
+            </ldap.addEntry>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>
