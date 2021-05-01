@@ -27,4 +27,88 @@
         <outSequence/>
         <faultSequence/>
     </resource>
+    <resource methods="POST" uri-template="/empupdate">
+        <inSequence>
+            <property expression="json-eval($.secureConnection)" name="secureConnection" scope="default" type="STRING"/>
+            <property expression="json-eval($.disableSSLCertificateChecking)" name="disableSSLCertificateChecking" scope="default" type="STRING"/>
+            <property expression="json-eval($.providerUrl)" name="providerUrl" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityPrincipal)" name="securityPrincipal" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityCredentials)" name="securityCredentials" scope="default" type="STRING"/>
+            <ldap.init>
+                <secureConnection>{$ctx:secureConnection}</secureConnection>
+                <disableSSLCertificateChecking>{$ctx:disableSSLCertificateChecking}</disableSSLCertificateChecking>
+                <providerUrl>{$ctx:providerUrl}</providerUrl>
+                <securityPrincipal>{$ctx:securityPrincipal}</securityPrincipal>
+                <securityCredentials>{$ctx:securityCredentials}</securityCredentials>
+            </ldap.init>
+            <property expression="json-eval($.content.attributes)" name="attributes" scope="default" type="STRING"/>
+            <property expression="json-eval($.content.dn)" name="dn" scope="default" type="STRING"/>
+            <property expression="json-eval($.content.mode)" name="mode" scope="default" type="STRING"/>
+            <ldap.updateEntry>
+                <attributes>{$ctx:attributes}</attributes>
+                <dn>{$ctx:dn}</dn>
+                <mode>{$ctx:mode}</mode>
+            </ldap.updateEntry>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/empdelete">
+        <inSequence>
+            <property expression="json-eval($.secureConnection)" name="secureConnection" scope="default" type="STRING"/>
+            <property expression="json-eval($.disableSSLCertificateChecking)" name="disableSSLCertificateChecking" scope="default" type="STRING"/>
+            <property expression="json-eval($.providerUrl)" name="providerUrl" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityPrincipal)" name="securityPrincipal" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityCredentials)" name="securityCredentials" scope="default" type="STRING"/>
+            <ldap.init>
+                <secureConnection>{$ctx:secureConnection}</secureConnection>
+                <disableSSLCertificateChecking>{$ctx:disableSSLCertificateChecking}</disableSSLCertificateChecking>
+                <providerUrl>{$ctx:providerUrl}</providerUrl>
+                <securityPrincipal>{$ctx:securityPrincipal}</securityPrincipal>
+                <securityCredentials>{$ctx:securityCredentials}</securityCredentials>
+            </ldap.init>
+            <property expression="json-eval($.content.dn)" name="dn" scope="default" type="STRING"/>
+            <ldap.deleteEntry>
+                <dn>{$ctx:dn}</dn>
+            </ldap.deleteEntry>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" uri-template="/empsearch">
+        <inSequence>
+            <property expression="json-eval($.secureConnection)" name="secureConnection" scope="default" type="STRING"/>
+            <property expression="json-eval($.disableSSLCertificateChecking)" name="disableSSLCertificateChecking" scope="default" type="STRING"/>
+            <property expression="json-eval($.providerUrl)" name="providerUrl" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityPrincipal)" name="securityPrincipal" scope="default" type="STRING"/>
+            <property expression="json-eval($.securityCredentials)" name="securityCredentials" scope="default" type="STRING"/>
+            <ldap.init>
+                <secureConnection>{$ctx:secureConnection}</secureConnection>
+                <disableSSLCertificateChecking>{$ctx:disableSSLCertificateChecking}</disableSSLCertificateChecking>
+                <providerUrl>{$ctx:providerUrl}</providerUrl>
+                <securityPrincipal>{$ctx:securityPrincipal}</securityPrincipal>
+                <securityCredentials>{$ctx:securityCredentials}</securityCredentials>
+            </ldap.init>
+            <property expression="json-eval($.content.objectClass)" name="objectClass" scope="default" type="STRING"/>
+            <!--  <property expression="json-eval($.content.filters)" name="filters" scope="default" type="STRING"/> -->
+            <property expression="json-eval($.content.attributes)" name="attributes" scope="default" type="STRING"/>
+            <property expression="json-eval($.content.dn)" name="dn" scope="default" type="STRING"/>
+            <property expression="json-eval($.content.filters)" name="filters" scope="default" type="STRING"/>
+            <log>
+                <property expression="$ctx:filters" name="Message:"/>
+            </log>
+            <ldap.searchEntry>
+                <objectClass>{$ctx:objectClass}</objectClass>
+                <limit>1000</limit>
+                <filters>{$ctx:filters}</filters>
+                <dn>{$ctx:dn}</dn>
+                <attributes>{$ctx:attributes}</attributes>
+            </ldap.searchEntry>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
 </api>
